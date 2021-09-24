@@ -1,0 +1,79 @@
+<!-- This page consists of an eventinput form that will be used to add events. -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>MyForm</title>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+
+    <body>
+
+        <nav>
+            <ul>
+                <li><a href="./mySchedule.html">My Schedule</a></li>
+                <li><a href="./MyForm.html">Form Input</a></li>
+                <li><a href="./myWidgets.html">My Widget</a></li>
+            </ul>
+        </nav>
+
+        <h1>Update an Event!</h1>
+
+        <form action="https://www-users.cselabs.umn.edu/~joh13266/echo.php" method="POST" id="eventForm">
+            <table>
+                <tr>
+                    <td><label for="event">Event</label></td>
+                    <td><input type="text" name="event" id="event" required pattern="[a-zA-Z0-9 ]+"></td>
+                </tr>
+                <tr>
+                    <td><label>Day of Week</label></td>
+                    <td> 
+                        <input type="text" name="day" list="day">
+                            <datalist id="day">
+                                <option value="Sun">Sun</option>
+                                <option value="Mon">Mon</option>
+                                <option value="Tue">Tue</option>
+                                <option value="Wed">Wed</option>
+                                <option value="Thu">Thu</option>
+                                <option value="Fri">Fri</option>
+                                <option value="Sat">Sat</option>
+                            </datalist>                    
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="start">Start</label></td>
+                    <td><input type="time" name="start" id="start" required></td>
+                </tr>
+                <tr>
+                    <td><label for="end">End</label></td>
+                    <td><input type="time" name="end" id="end" required></td>
+                </tr>
+                <tr>
+                    <td><label for="phone">Phone</label></td>
+                    <td><input type="number" name="phone" id="phone" required></td>
+                </tr>
+                <tr>
+                    <td><label for="location">Location</label></td>
+                    <td><input type="text" name="location" id="location" required></td>
+                </tr>
+                <tr>
+                    <td><label for="info">Extra Info</label></td>
+                    <td><input type="text" name="info" id="info" required></td>
+                </tr>
+                <tr>
+                    <td><label for="url">Enter URL for the Extra Info</label></td>
+                    <td><input type="url" name="url" id="url" required></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" id="submit"></td>
+                </tr>
+            </table>
+        
+        </form>
+        
+        <script src="app.js"></script>
+    </body>
+
+</html>
