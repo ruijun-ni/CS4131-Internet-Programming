@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>MySchedule</title>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+
+    <body>
+        <nav>
+            <ul>
+                <li><a href="./mySchedule.html">My Schedule</a></li>
+                <li><a href="./MyForm.html">Form Input</a></li>
+                <li><a href="./myWidgets.html">My Widget</a></li>
+            </ul>
+        </nav>
+
+        <p><span id="date"></span></p>
+        <p><span id="dateTime"></span></p>
+
+        <h1>My Schedule</h1>
+        <div id="container">
+            <main>
+                <table id="schedule">
+    
+                    <tr>
+                        <th>Day</th>
+                        <th>Event</th>
+                        <th>Time</th>
+                        <th>Event Location (Virtual or Physical)</th>
+                        <th>Phone Number</th>
+                        <th>URL</th>
+                    </tr>
+        
+                    <tr id="blegen">
+                        <td class="getDay">Monday</td>
+                        <td>Csci 4131 Lecture</td>
+                        <td>9:45am - 11:00am</td>
+                        <td>
+                            Blegen Hall 5
+                            <img class="thumbnail" src="img/blegen.jpg" alt="Blegen Hall">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268388">Csci 4131 Info</a></td>
+                    </tr>
+        
+                    <tr id="willey">
+                        <td class="getDay">Monday</td>
+                        <td>Csci 2011 Lecture</td>
+                        <td>12:20pm - 13:10pm</td>
+                        <td>
+                            Willey Hall 125
+                            <img class="thumbnail" src="img/willey.jpg" alt="Willey Hall">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268008">Csci 2011 Info</a></td>
+                    </tr>
+        
+                    <tr id="walter">
+                        <td class="getDay">Monday</td>
+                        <td>Csci 2021 Lecture</td>
+                        <td>13:25pm - 14:15pm</td>
+                        <td>
+                            Walter Library 125
+                            <img class="thumbnail" src="img/walter.jpg" alt="Walter Library">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268388">Csci 2021 Info</a></td>
+                    </tr>
+        
+                    <tr id="keller1">
+                        <td class="getDay">Tuesday</td>
+                        <td>Csci 2021 Laboratory</td>
+                        <td>08:00am - 08:50am</td>
+                        <td>
+                            Kenneth H Keller Hall 1-250
+                            <img class="thumbnail" src="img/keller.jpg" alt="Keller Hall">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268388">Csci 2021 Info</a></td>
+                    </tr>
+        
+                    <tr id="coffman">
+                        <td class="getDay">Tuesday</td>
+                        <td>Part-time Job</td>
+                        <td>14:15pm - 17:45pm</td>
+                        <td>
+                            Coffman Memorial Union
+                            <img class="thumbnail" src="img/coffman.jpg" alt="Coffman Memorial Union">
+                        </td>
+                        <td>(612) 625-7543</td>
+                        <td><a href="https://dining.umn.edu/job-office">M Dining Student Job Office</a></td>
+                    </tr>
+        
+                    <tr id="keller2">
+                        <td class="getDay">Wednesday</td>
+                        <td>Csci 2021 Lab</td>
+                        <td>08:00am - 08:50am</td>
+                        <td>
+                            Kenneth H Keller Hall 1-250
+                            <img class="thumbnail" src="img/keller.jpg" alt="Keller Hall">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268508">Csci 2021 Info</a></td>
+                    </tr>
+        
+                    <tr id="svf">
+                        <td class="getDay">Thurday</td>
+                        <td>Walk Dog</td>
+                        <td>7:30am - 9:00am</td>
+                        <td>
+                            850 Washington Ave SE
+                            <img class="thumbnail" src="img/svf.jpg" alt="Stadium Village Flat">
+                        </td>
+                        <td>(612) 248-1000</td>
+                        <td><a href="https://stadiumvillageflats.com/">Stadium Village Flats</a></td>
+                    </tr>
+        
+        
+                    <tr id="tate">
+                        <td id="getDay">Friday</td>
+                        <td>Csci 2041 Lecture</td>
+                        <td>11:15am - 12:05am</td>
+                        <td>
+                            John T. Tate Hall 105
+                            <img class="thumbnail" src="img/tate.jpg" alt="Tate Hall">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268617">Csci 2041 Info</a></td>
+                    </tr>
+        
+                    <tr id="teahouse">
+                        <td id="getDay">Saturday</td>
+                        <td>Brunch</td>
+                        <td>10:00am - 11:30am</td>
+                        <td>
+                            2425 University Avenue SE
+                            <img class="thumbnail" src="img/teahouse.jpg" alt="Tea House">
+                        </td>
+                        <td>(612) 331-8866</td>
+                        <td><a href="https://www.teahouseumn.com/">Tea House</a></td>
+                    </tr>
+        
+                    <tr id="rec">
+                        <td id="getDay">Sunday</td>
+                        <td>Work out</td>
+                        <td>10:00am - 11:00am</td>
+                        <td>
+                            123 Harvard Street SE
+                            <img class="thumbnail" src="img/rec.jpg" alt="Rec Center">
+                        </td>
+                        <td>(612) 626-9222</td>
+                        <td><a href="https://recwell.umn.edu/">Info on where I work out</a></td>
+                    </tr>
+        
+                </table>
+            </main>
+            
+            <aside>
+                <button id="show_or_goaway" type="button"> Go away!</button>
+                <img id="gopher" src="img/gophers-mascot.png" alt="Gophers Mascot">
+            </aside>
+        </div>
+
+
+        <p>This page has been tested.</p>
+        <script src="app.js"></script>
+    </body>
+
+</html>

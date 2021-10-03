@@ -1,0 +1,180 @@
+/*************************************\
+|**                                 **|
+|**    This page has been tested.   **|
+|**                                 **|
+\*************************************/
+
+
+h1 {
+    color:black;
+}
+
+h2 {
+    color:#7a0019;
+}
+
+
+iframe {
+    border: 0px;
+}
+
+
+/* Navigation bar styling */
+nav ul {
+   list-style-type: none;
+   margin: 0;
+   padding: 0; 
+   overflow: hidden;
+   background-color:#7a0019;
+}
+
+nav li {
+    float: left;
+}
+
+nav a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 10px 12px;
+    text-decoration: none;
+}
+
+nav li a:hover {
+    background-color: #ffcc33;
+    color: black;
+}
+/* end of nav bar styling */
+
+
+
+/* Schedule table styling */
+table, th, td {
+    border: 1px solid rgba(255,183,30,0.8);
+    border-collapse: collapse;
+}
+
+#schedule th {
+    background-color:rgba(255,183,30,0.8);
+}
+
+#schedule tr:nth-child(even) {
+    background-color:rgba(255,222,122,0.5);
+}
+
+#schedule tr:nth-child(odd) {
+    background-color: rgba(255,183,30,0.5);
+}
+/* end of schedule table styling */
+
+
+#container {
+    display: flex;
+    padding: 1%;
+    justify-content:space-around;
+}
+
+main { 
+    flex: 0 1 70%;
+}
+
+aside {
+    flex: 0 1 30%;
+}
+
+aside img {
+    width: 500px;
+    height: 350px;
+    border: 2px solid #7a0019;
+    margin-top: 80px;
+    margin-left: 15px;
+}
+
+#schedule tr:hover {
+    background-color: #ffcc33;
+}
+
+/* diplay the image when not hovering*/
+.thumbnail {
+    height: 0;
+    width: 0;
+}
+
+#schedule tr:hover img{
+    position: relative;
+    height: 50px;
+    width:auto;
+}
+
+
+/* My form */
+input[type=submit] {
+    background-color: #ffcc33;
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+
+#eventForm {
+    background-color: #7a0019;
+    color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-top:5%;
+    margin-left: 35%; 
+    text-align: left;
+    padding: 2px;
+    width: fit-content;
+} 
+
+#eventForm tr {
+    height: 40px;
+}
+
+/* myWidgets */
+.container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    align-content: space-around;
+    margin: 2% 7%;
+  }
+
+
+/* Password Strength Validator */
+#register .short{
+    color: red;
+    font-size: large;
+} 
+#register .weak{
+    color:orange;
+    font-size: large;
+}
+#register .good{
+    color:#2D98F3;
+    font-size: large;
+}
+#register .strong{
+    color: limegreen;
+    font-size: large;
+} 
+
+#register input {
+    padding: 4px 10px;
+    border: 1px solid #ffcc33;
+    width: 250px;
+    font-size: 1em;
+    height: 20px;
+}
+
+#passwordchecker #container {
+    width: 550px;
+    height: 300px;
+    background: white;
+    border-radius: 5px;
+    border: 2px solid #7a0019;
+}
