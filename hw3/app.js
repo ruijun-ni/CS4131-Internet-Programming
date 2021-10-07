@@ -90,8 +90,9 @@ document.getElementById("rec").addEventListener("mouseover",function(){
 
 
 // map: geocoder
-var marker2;
-var infowindow2;
+var marker, marker2;
+var infowindow, infowindow2;
+var service;
 
 function initMap() {
   var myLatLng = {lat: 44.977276, lng: -93.232266};
@@ -107,7 +108,6 @@ function initMap() {
   var times = document.getElementsByClassName("eventTime");
   var days = document.getElementsByClassName("weekdays");
   
-
   for (var i = 0; i < locations.length; i++) {
     var geocoder = new google.maps.Geocoder(); // Create a geocoder object
     geocodeAddress(geocoder, map, names[i].innerText,locations[i].innerText, times[i].innerText, days[i].innerText);
@@ -115,24 +115,56 @@ function initMap() {
 
   // return the value of the address entered in an input text box when the submit button is clicked
 
-  // nearby search
-  var request = {
-    location: navigator.geolocation.getCurrentPosition(), // find the current location
-    radius: '500',
-    type: ['restaurant']
-  };
-  service = new google.maps.places.PlacesService(map);
-  service.nearbySearch(request, callback);
+  // // nearby search
+  // var request = {
+  //   location: navigator.geolocation.getCurrentPosition(success), // find the current location
+  //   radius: '500',
+  //   type: ['restaurant']
+  // };
+  // service = new google.maps.places.PlacesService(map);
+  // service.nearbySearch(request, callback);
 
 }  // end init map function definiton
 
-function callback(results, status) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-    for (var i = 0; i < results.length; i++) {
-      createMarker(results[i]);
-    }
-  }
-}
+// function success(pos) {
+//   var crd = pos.coords;
+//   console.log('Your current position is:');
+//   console.log(`Latitude : ${crd.latitude}`);
+//   console.log(`Longitude: ${crd.longitude}`);
+// }
+
+// function callback(results, status) {
+//   console.log("all places nearby");
+//   for (var i = 0; i < results.length; i++) {
+//       console.log(results[i]);
+//       var geocoder1 = new google.maps.Geocoder(); // Create a geocoder object
+
+//       createMarker(geocoder1, map, results[i]);
+//   }
+// }
+
+// function createMarker(geocoder, resultsMap, address) {
+
+//   geocoder.geocode({'address': address}, function(results, status) {
+//     const icon_img = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+//     if (status === google.maps.GeocoderStatus.OK) {
+//         resultsMap.setCenter(results[0].geometry.location);
+//         marker1 = new google.maps.Marker({
+//               map: resultsMap,
+//               position: results[0].geometry.location,
+//               title:address,
+//               icon: icon_img
+//               });
+//         infowindow1 = new google.maps.InfoWindow({
+//               content: "<p>" + address + "</p>"
+//               });
+  
+//         google.maps.event.addListener(marker1, 'click', createWindow(resultsMap, infowindow1, marker1));
+//     } else {
+//         alert('Geocode was not successful for the following reason: ' + status);
+//     } 
+//   }); 
+// } 
 
 
 // This function takes a geocode object, a map object, and an address, and 
@@ -154,7 +186,7 @@ function geocodeAddress(geocoder, resultsMap, name, address, time, day) {
               content: "<p>" + name + "</p><p>" + day + time + "</p><p>" + address + "</p>"
               });
   
-        google.maps.event.addListener(marker2, 'click', createWindow(resultsMap,infowindow2, marker2));
+        google.maps.event.addListener(marker2, 'click', createWindow(resultsMap, infowindow2, marker2));
     } else {
         alert('Geocode was not successful for the following reason: ' + status);
     } //end if-then-else
