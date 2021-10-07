@@ -1,5 +1,10 @@
+/*************************************\
+|**                                 **|
+|**        JS for mySchedule        **|
+|**                                 **|
+\*************************************/
 
-// timer - update time
+// timer - update time and day
 let timer = setInterval(clock, 1000);
 function clock() {
   var datetoday = new Date();
@@ -15,21 +20,7 @@ for (var i=0; i<theDay.length; i++) {
 }
 
 
-// fading picture
-// using jQuery
-/*
-let $img = $("#gopher");
-$("#show_or_goaway").click(function() {
-  if (document.getElementById("show_or_goaway").innerHTML == "Go away") {
-    $img.fadeOut(2000);
-    document.getElementById("show_or_goaway").innerHTML = "Come back";
-  } else {
-    $img.show(2000);
-    document.getElementById("show_or_goaway").innerHTML = "Go away";
-  }
-});
-*/
-
+// showing and fading picture
 document.getElementById("show_or_goaway").addEventListener("click", display);
 
 function display() {
@@ -65,175 +56,128 @@ function display() {
 };
 
 
-// pictures
+// pictures on the right
 document.getElementById("blegen").addEventListener("mouseover",function(){
   document.getElementById("gopher").src="img/blegen.jpg";
 });
-
-
 document.getElementById("willey").addEventListener("mouseover",function(){
   document.getElementById("gopher").src="img/willey.jpg";
 });
-
 document.getElementById("walter").addEventListener("mouseover",function(){
   document.getElementById("gopher").src="img/walter.jpg";
 });
-
 document.getElementById("keller1").addEventListener("mouseover",function(){
   document.getElementById("gopher").src="img/keller.jpg";
 });
-
 document.getElementById("coffman").addEventListener("mouseover",function(){
   document.getElementById("gopher").src="img/coffman.jpg";
 });
-
 document.getElementById("keller2").addEventListener("mouseover",function(){
   document.getElementById("gopher").src="img/keller.jpg";
 });
-
 document.getElementById("svf").addEventListener("mouseover",function(){
   document.getElementById("gopher").src="img/svf.jpg";
 });
-
 document.getElementById("tate").addEventListener("mouseover",function(){
   document.getElementById("gopher").src="img/tate.jpg";
 });
-
 document.getElementById("teahouse").addEventListener("mouseover",function(){
   document.getElementById("gopher").src="img/teahouse.jpg";
 });
-
 document.getElementById("rec").addEventListener("mouseover",function(){
   document.getElementById("gopher").src="img/rec.jpg";
 });
 
 
+// map: geocoder
+var marker2;
+var infowindow2;
 
-// // dynamically extract the name, time and location of the physical events from the DOM objects
-// var eventNames = document.getElementsByClassName("eventName");
-// var eventTimes = document.getElementsByClassName("eventTime");
-// var eventLocations = document.getElementsByClassName("eventLocation");
-// console.log("dynamially extract the names, times and locations");
+function initMap() {
+  var myLatLng = {lat: 44.977276, lng: -93.232266};
+  /* Create a map and place it on the div */
+  var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 14,
+      center: myLatLng
+    });
 
+  // dynamically extract the name, time and location of the physical events from the DOM objects
+  var locations = document.getElementsByClassName("eventLocation"); // This is the locations we will search for using the geocoder
+  var names = document.getElementsByClassName("eventName");
+  var times = document.getElementsByClassName("eventTime");
+  var days = document.getElementsByClassName("weekdays");
+  
 
-// var geocoder;
-// var map;
-// function initialize() {
-//   geocoder = new google.maps.Geocoder();
-//   var latlng = new google.maps.LatLng(44.977276, -93.232266);
-//   var mapOptions = {
-//     zoom: 14,
-//     center: latlng
-//   }
-//   map = new google.maps.Map(document.getElementById('map'), mapOptions);
-// }
+  for (var i = 0; i < locations.length; i++) {
+    var geocoder = new google.maps.Geocoder(); // Create a geocoder object
+    geocodeAddress(geocoder, map, names[i].innerText,locations[i].innerText, times[i].innerText, days[i].innerText);
+  }
 
-// function codeAddress() {
-//     for (var i = 0; i < eventNames.length; i++) {
-//       geocoder.geocode( { 'address': eventLocations[i]}, function(results, status) {
-//       if (status == 'OK') {
-//         map.setCenter(results[0].geometry.location);
-//         var marker = new google.maps.Marker({
-//             map: map,
-//             position: results[0].geometry.location
-//         });
-//       } else {
-//         alert('Geocode was not successful for the following reason: ' + status);
-//       }
-//     });
-//   }
+  // return the value of the address entered in an input text box when the submit button is clicked
 
-// }
+  // nearby search
+  var request = {
+    location: navigator.geolocation.getCurrentPosition(), // find the current location
+    radius: '500',
+    type: ['restaurant']
+  };
+  service = new google.maps.places.PlacesService(map);
+  service.nearbySearch(request, callback);
 
+}  // end init map function definiton
 
-// function initMap() {
-//   const myLatLng = { lat: 44.977276, lng: -93.232266};
-//   const map = new google.maps.Map(document.getElementById("map"), {
-//     zoom: 14,
-//     center: myLatLng,
-//   });
-
-//   new google.maps.Marker({
-//     position: myLatLng,
-//     map,
-//     title: "Hello World!",
-//   });
-// }
+function callback(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      createMarker(results[i]);
+    }
+  }
+}
 
 
+// This function takes a geocode object, a map object, and an address, and 
+// if successful in finding the address, it places a marker with a callback that shows an 
+// info window when the marker is "clicked"
+function geocodeAddress(geocoder, resultsMap, name, address, time, day) {
+
+  geocoder.geocode({'address': address}, function(results, status) {
+    const icon_img = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+    if (status === google.maps.GeocoderStatus.OK) {
+        resultsMap.setCenter(results[0].geometry.location);
+        marker2 = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location,
+              title:address,
+              icon: icon_img
+              });
+        infowindow2 = new google.maps.InfoWindow({
+              content: "<p>" + name + "</p><p>" + day + time + "</p><p>" + address + "</p>"
+              });
+  
+        google.maps.event.addListener(marker2, 'click', createWindow(resultsMap,infowindow2, marker2));
+    } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+    } //end if-then-else
+  }); // end call to geocoder.geocode function
+} // end geocodeAddress function
+
+// Function to return an anonymous function that will be called when the rmarker created in the 
+  // geocodeAddress function is clicked	
+function createWindow(rmap, rinfowindow, rmarker){
+  return function(){
+      rinfowindow.open(rmap, rmarker);
+  }
+}//end create (info) window
 
 
-// // This example adds a search box to a map, using the Google Place Autocomplete
-// // feature. People can enter geographical searches. The search box will return a
-// // pick list containing a mix of places and predicted search terms.
-// // This example requires the Places library. Include the libraries=places
-// // parameter when you first load the API. For example:
-// // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-// function initAutocomplete() {
-//   const map = new google.maps.Map(document.getElementById("map"), {
-//     center: { lat: 44.977276, lng: -93.232266},
-//     zoom: 14,
-//     mapTypeId: "roadmap",
-//   });
-//   // Create the search box and link it to the UI element.
-//   const input = document.getElementById("pac-input");
-//   const searchBox = new google.maps.places.SearchBox(input);
-
-//   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-//   // Bias the SearchBox results towards current map's viewport.
-//   map.addListener("bounds_changed", () => {
-//     searchBox.setBounds(map.getBounds());
-//   });
-
-//   let markers = [];
-
-//   // Listen for the event fired when the user selects a prediction and retrieve
-//   // more details for that place.
-//   searchBox.addListener("places_changed", () => {
-//     const places = searchBox.getPlaces();
-//     // TODO: also add the place in the schedule
-
-//     if (places.length == 0) {
-//       return;
-//     }
-
-//     // // Clear out the old markers.
-//     // markers.forEach((marker) => {
-//     //   marker.setMap(null);
-//     // });
-//     // markers = [];
-
-//     // For each place, get the icon, name and location.
-//     const bounds = new google.maps.LatLngBounds();
-
-//     places.forEach((place) => {
-//       if (!place.geometry || !place.geometry.location) {
-//         console.log("Returned place contains no geometry");
-//         return;
-//       }
-
-//       const icon = {
-//         url: place.icon,
-//         size: new google.maps.Size(71, 71),
-//         origin: new google.maps.Point(0, 0),
-//         anchor: new google.maps.Point(17, 34),
-//         scaledSize: new google.maps.Size(25, 25),
-//       };
-
-//       // Create a marker for each place.
-//       const icon_img = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
-
-//       markers.push(
-//         new google.maps.Marker({
-//           map,
-//           icon: icon_img,
-//           // TODO: 加上事件名和时间段
-//           title: place.name,
-//           position: place.geometry.location,
-
-//         })
-//       );
-//     });
-//     map.fitBounds(bounds);
-//   });
-// }
+// input area
+// when "other" is selected, enable the textbox
+var places = document.getElementById("places")
+places.addEventListener('change', (e) => {  
+  if (places.value == "Other") {
+    console.log("'Other' is selected, enable the textbox");
+    document.getElementById("textbox").disabled = false;
+  } else {
+    document.getElementById("textbox").disabled = true;
+  }
+});
