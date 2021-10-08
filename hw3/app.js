@@ -89,10 +89,54 @@ document.getElementById("rec").addEventListener("mouseover",function(){
 });
 
 
+// input area
+// when "other" is selected, enable the textbox
+var places = document.getElementById("places")
+places.addEventListener('change', (e) => {  
+  if (places.value == "Other") {
+    console.log("'Other' is selected, enable the textbox");
+    document.getElementById("textbox").disabled = false;
+  } else {
+    document.getElementById("textbox").disabled = true;
+  }
+});
+
+
 // map: geocoder
 var marker, marker2;
 var infowindow, infowindow2;
 var service;
+
+function geocodeAddress(geocoder, resultsMap, name, address, time, day) {
+  geocoder.geocode({'address': address}, function(results, status) {
+    const icon_img = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+    if (status === google.maps.GeocoderStatus.OK) {
+        resultsMap.setCenter(results[0].geometry.location);
+        marker2 = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location,
+              title:address,
+              icon: icon_img
+              });
+        infowindow2 = new google.maps.InfoWindow({
+              content: "<p>" + name + "</p><p>" + day + time + "</p><p>" + address + "</p>"
+              });
+  
+        google.maps.event.addListener(marker2, 'click', createWindow(resultsMap, infowindow2, marker2));
+    } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+    } 
+  }); 
+} 
+
+
+function createWindow(rmap, rinfowindow, rmarker){
+  return function(){
+      rinfowindow.open(rmap, rmarker);
+  }
+}
+
+// init map
 
 function initMap() {
   var myLatLng = {lat: 44.977276, lng: -93.232266};
@@ -113,103 +157,156 @@ function initMap() {
     geocodeAddress(geocoder, map, names[i].innerText,locations[i].innerText, times[i].innerText, days[i].innerText);
   }
 
-  // return the value of the address entered in an input text box when the submit button is clicked
-
-  // // nearby search
-  // var request = {
-  //   location: navigator.geolocation.getCurrentPosition(success), // find the current location
-  //   radius: '500',
-  //   type: ['restaurant']
-  // };
-  // service = new google.maps.places.PlacesService(map);
-  // service.nearbySearch(request, callback);
-
-}  // end init map function definiton
-
-// function success(pos) {
-//   var crd = pos.coords;
-//   console.log('Your current position is:');
-//   console.log(`Latitude : ${crd.latitude}`);
-//   console.log(`Longitude: ${crd.longitude}`);
-// }
-
-// function callback(results, status) {
-//   console.log("all places nearby");
-//   for (var i = 0; i < results.length; i++) {
-//       console.log(results[i]);
-//       var geocoder1 = new google.maps.Geocoder(); // Create a geocoder object
-
-//       createMarker(geocoder1, map, results[i]);
-//   }
-// }
-
-// function createMarker(geocoder, resultsMap, address) {
-
-//   geocoder.geocode({'address': address}, function(results, status) {
-//     const icon_img = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
-//     if (status === google.maps.GeocoderStatus.OK) {
-//         resultsMap.setCenter(results[0].geometry.location);
-//         marker1 = new google.maps.Marker({
-//               map: resultsMap,
-//               position: results[0].geometry.location,
-//               title:address,
-//               icon: icon_img
-//               });
-//         infowindow1 = new google.maps.InfoWindow({
-//               content: "<p>" + address + "</p>"
-//               });
-  
-//         google.maps.event.addListener(marker1, 'click', createWindow(resultsMap, infowindow1, marker1));
-//     } else {
-//         alert('Geocode was not successful for the following reason: ' + status);
-//     } 
-//   }); 
-// } 
 
 
-// This function takes a geocode object, a map object, and an address, and 
-// if successful in finding the address, it places a marker with a callback that shows an 
-// info window when the marker is "clicked"
-function geocodeAddress(geocoder, resultsMap, name, address, time, day) {
 
-  geocoder.geocode({'address': address}, function(results, status) {
-    const icon_img = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
-    if (status === google.maps.GeocoderStatus.OK) {
-        resultsMap.setCenter(results[0].geometry.location);
-        marker2 = new google.maps.Marker({
-              map: resultsMap,
-              position: results[0].geometry.location,
-              title:address,
-              icon: icon_img
-              });
-        infowindow2 = new google.maps.InfoWindow({
-              content: "<p>" + name + "</p><p>" + day + time + "</p><p>" + address + "</p>"
-              });
-  
-        google.maps.event.addListener(marker2, 'click', createWindow(resultsMap, infowindow2, marker2));
-    } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-    } //end if-then-else
-  }); // end call to geocoder.geocode function
-} // end geocodeAddress function
 
-// Function to return an anonymous function that will be called when the rmarker created in the 
-  // geocodeAddress function is clicked	
-function createWindow(rmap, rinfowindow, rmarker){
-  return function(){
-      rinfowindow.open(rmap, rmarker);
+
+  // the first search component - places nearby
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // the second search component
+  var currentPos = {
+    lat: 44.977276, lng: -93.232266
+  };
+  navigator.geolocation.getCurrentPosition((position) => {
+    console.log(position);
+    currentPos = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+    };
+    console.log(currentPos);
+    
+  });
+
+  const directionsRenderer = new google.maps.DirectionsRenderer();
+  const directionsService = new google.maps.DirectionsService();
+
+  directionsRenderer.setMap(map);
+  directionsRenderer.setPanel(document.getElementById("sidebar"));
+
+  const control = document.getElementById("floating-panel");
+
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
+  const onChangeHandler = function () {
+    calculateAndDisplayRoute(directionsService, directionsRenderer, currentPos);
+  };
+
+  document.getElementById("secondBtn").addEventListener("click", onChangeHandler);
+
+
+  var autocomplete = new google.maps.places.Autocomplete(
+    (document.getElementById("end")), {
+        types: ['geocode']
+    });
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        fillInAddress();
+  });
+
+
+} 
+
+// for the second input box
+function calculateAndDisplayRoute(directionsService, directionsRenderer, currentPos) {
+
+  const selectedMode = document.querySelector('input[name="travel"]:checked').value;
+
+  console.log(selectedMode);
+  const end = document.getElementById("end").value;
+
+  directionsService
+    .route({
+      origin: currentPos,
+      destination: end,
+      travelMode: google.maps.TravelMode[selectedMode],
+    })
+    .then((response) => {
+      directionsRenderer.setDirections(response);
+    })
+    .catch((e) => window.alert("Directions request failed due to " + status));
+}
+
+// for autocomplete
+let autocomplete;
+var componentForm = {
+  street_number: 'short_name',
+  route: 'long_name',
+  locality: 'long_name',
+  administrative_area_level_1: 'short_name',
+  country: 'long_name',
+  postal_code: 'short_name'
+};
+function fillInAddress() {
+  // Get the place details from the autocomplete object.
+  var place = autocomplete.getPlace();
+
+  for (var component in componentForm) {
+      document.getElementById(component).value = '';
+      document.getElementById(component).disabled = false;
   }
-}//end create (info) window
 
-
-// input area
-// when "other" is selected, enable the textbox
-var places = document.getElementById("places")
-places.addEventListener('change', (e) => {  
-  if (places.value == "Other") {
-    console.log("'Other' is selected, enable the textbox");
-    document.getElementById("textbox").disabled = false;
-  } else {
-    document.getElementById("textbox").disabled = true;
+  // Get each component of the address from the place details
+  // and fill the corresponding field on the form.
+  for (var i = 0; i < place.address_components.length; i++) {
+      var addressType = place.address_components[i].types[0];
+      if (componentForm[addressType]) {
+      var val = place.address_components[i][componentForm[addressType]];
+      document.getElementById(addressType).value = val;
+      }
   }
-});
+}
+
+// for the first input box
+function getLocation() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 44.977276, lng: -93.232266},
+    zoom: 14
+  });
+  const theRadius =  document.getElementById("numberOfMeters").value;
+  //const placeType =
+  ////////////////////////
+  //////////////////////// 
+  //////////////////////// 
+  //////////////////////// 
+  //////////////////////// 
+  ////////////////////////
+  // TODO: select the type 
+  var request = {
+    location: {lat: 44.977276, lng: -93.232266},
+    radius: theRadius,
+    type: ['restaurant'] //TODO
+  };
+  console.log(request);
+  service = new google.maps.places.PlacesService(map);
+  service.nearbySearch(request, callback);
+}
+
+//////// TODO: InfoWindow
+function callback(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      createMarker(results[i].geometry.location);
+    }
+  }
+}
+
+function createMarker(position) {
+  new google.maps.Marker({
+      position: position,
+      map: map
+  });
+}
+
