@@ -5,6 +5,12 @@
 \*************************************/
 
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 h1 {
     color:black;
 }
@@ -65,13 +71,19 @@ table, th, td {
 #schedule tr:nth-child(odd) {
     background-color: rgba(255,183,30,0.5);
 }
+
+.weekdays {
+    display: none;
+}
+
+
 /* end of schedule table styling */
 
 
 #container {
     display: flex;
     padding: 1%;
-    justify-content:space-around;
+    justify-content: space-around;
 }
 
 main { 
@@ -106,6 +118,54 @@ aside img {
     width:auto;
 }
 
+/* map and input area */
+#map {
+    height: 50%;
+    margin-left: 0px;
+    width:auto;
+    height: 400px;
+    
+}
+
+#map2 {
+    height:100%;
+    width: 500px;
+    height: 400px;
+}
+
+#floating-panel {
+    position: relative;
+    margin-left: 10%;
+    margin-right: 10%;
+      background-color: #fff;
+    padding: 5px;
+    text-align: center;
+    font-family: 'Roboto','sans-serif';
+    line-height: 30px;
+    padding-left: 10px;
+}	
+
+#inputArea1 {
+    border: 1px solid gray;
+    width: 250px;
+    height: 200px;
+    background-color:rgb(201, 201, 201);
+}
+
+
+#inputArea2 {
+    border: 1px solid gray;
+    width: 250px;
+    height: 200px;
+    background-color:rgb(235, 235, 235);
+}
+
+#container_map {
+    display: grid;
+    grid-template-columns: 20% 60% 20% ;
+    margin: 2% 5%;
+}
+
 
 /* My form */
 input[type=submit] {
@@ -125,7 +185,7 @@ input[type=submit] {
     border: 2px solid black;
     border-radius: 10px;
     margin-top:5%;
-    margin-left: 35%; 
+    margin-left: 10%; 
     text-align: left;
     padding: 2px;
     width: fit-content;
@@ -135,6 +195,17 @@ input[type=submit] {
     height: 40px;
 }
 
+/* add a map on the right of the form */
+.container_form {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-content: space-around;
+    margin: 10% 10%;
+}
+
+/* end of my form */
+
+
 /* myWidgets */
 .container {
     display: grid;
@@ -142,7 +213,7 @@ input[type=submit] {
     grid-template-rows: auto auto;
     align-content: space-around;
     margin: 2% 7%;
-  }
+}
 
 
 /* Password Strength Validator */
