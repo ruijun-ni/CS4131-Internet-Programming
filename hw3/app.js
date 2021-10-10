@@ -158,25 +158,6 @@ function initMap() {
   }
 
 
-
-
-
-
-  // the first search component - places nearby
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // the second search component
   var currentPos = {
     lat: 44.977276, lng: -93.232266
@@ -276,37 +257,39 @@ function getLocation() {
     zoom: 14
   });
   const theRadius =  document.getElementById("numberOfMeters").value;
-  //const placeType =
-  ////////////////////////
-  //////////////////////// 
-  //////////////////////// 
-  //////////////////////// 
-  //////////////////////// 
-  ////////////////////////
-  // TODO: select the type 
+  var placeType = document.getElementById("places").value;
+  console.log(placeType);
+  if (placeType == "Other") {
+    console.log("other is selected");
+    placeType = document.getElementById("textbox").value;
+  }
+  
   var request = {
     location: {lat: 44.977276, lng: -93.232266},
     radius: theRadius,
-    type: ['restaurant'] //TODO
+    type: placeType
   };
   console.log(request);
   service = new google.maps.places.PlacesService(map);
   service.nearbySearch(request, callback);
 }
 
-//////// TODO: InfoWindow
+// //////// TODO: InfoWindow
+// TODO: content
+
 function callback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
-      createMarker(results[i].geometry.location);
+      var position = results[i].geometry.location;
+
+      marker = new google.maps.Marker({ position: position, map: map});
+ 
+      infowindow = new google.maps.InfoWindow({
+        content: position.toString()
+      });
+    
+
+      google.maps.event.addListener(marker, "click",createWindow(map,infowindow,marker));
     }
   }
 }
-
-function createMarker(position) {
-  new google.maps.Marker({
-      position: position,
-      map: map
-  });
-}
-
