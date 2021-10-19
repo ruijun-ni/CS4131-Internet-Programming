@@ -10,7 +10,7 @@ from threading import Thread
 # Equivalent to CRLF, named NEWLINE for clarity
 NEWLINE = "\r\n"
 
-#added as part of demo on how to add head request
+# added as part of demo on how to add head request
 OK = 'HTTP/1.1 200 OK{}Connection: close{}{}'.format(NEWLINE, NEWLINE, NEWLINE)
 NOT_FOUND = 'HTTP/1.1 404 NOT FOUND{}Connection: close{}{}'.format(NEWLINE, NEWLINE, NEWLINE)
 FORBIDDEN = 'HTTP/1.1 403 FORBIDDEN{}Connection: close{}{}'.format(NEWLINE, NEWLINE, NEWLINE)
@@ -49,12 +49,9 @@ def has_permission_other(file_name):
 # Some files should be read in plain text, whereas others should be read
 # as binary. To maintain a mapping from file types to their expected form, we
 # have a `set` that maintains membership of file extensions expected in binary.
-# We've defined a starting point for this set, which you may add to as
-# necessary.
-# TODO: Finish this set with all relevant files types that should be read in
-# binary
+# We've defined a starting point for this set, which you may add to as necessary.
+# TODO: Finish this set with all relevant files types that should be read in binary
 binary_type_files = set(["jpg", "jpeg", "mp3", "png", "html", "js", "css"])
-
 
 def should_return_binary(file_extension):
     """
@@ -78,7 +75,6 @@ mime_types = {
     "jpg": "text/jpg",
     "jpeg": "text/jpeg"
 }
-
 
 def get_file_mime_type(file_extension):
     """
@@ -146,6 +142,7 @@ class HTTPServer:
             return self.post_request(requested_file, formatted_data)
         return self.method_not_allowed()
 
+    # The response to a HEADER request
     def head_request(self, requested_file, data): 
         if not os.path.exists(requested_file):
             response = NOT_FOUND
@@ -159,20 +156,24 @@ class HTTPServer:
     # TODO: Write the response to a GET request
     def get_request(self, requested_file, data):
         if not os.path.exists(requested_file):
-            response = NOT_FOUND
+            response = resource_not_found()
+            return response.encode('utf-8')
         elif not has_permission_other(requested_file):
-            response = FORBIDDEN
+            response = resource_forbidden()
+            return response.encode('utf-8')
         else:
+            builder = ResponseBuilder()
+
             if (should_return_binary(requested_file.split(".")[0])):
-                get_file_binary_contents(requested_file)
+                builder.set_content(get_file_binary_contents(requested_file))
             else:
-                get_file_contents(requested_file)
-
-        # mineType = get_file_mime_type(requested_file.split(".")[0])
-
-        # send it back with a status set and appropriate mime type
-        # depending on `get_file_mime_type` ??
-
+                builder.set_content(get_file_contents(requested_file))
+            
+            builder.set_status("200", "OK")
+            builder.add_header("Connection", "close")
+            builder.add_header("Content-Type", get_file_mime_type(requested_file.split(".")[0]))
+            builder.set_content(get_file_contents(requested_file))
+  
 
         """
         Responds to a GET request with the associated bytes.
@@ -188,7 +189,6 @@ class HTTPServer:
         send it back with a status set and appropriate mime type
         depending on `get_file_mime_type`.
         """
-        pass
 
     # TODO: Write the response to a POST request
     def post_request(self, requested_file, data):
@@ -245,6 +245,8 @@ class HTTPServer:
         builder.set_content(get_file_contents("404.html"))
         return builder.build()
 
+
+
     # TODO: Make a function that handles forbidden error
     def resource_forbidden(self):
         """
@@ -293,6 +295,9 @@ class ResponseBuilder:
 
     # TODO Complete the build function
     def build(self):
+        response = '{}{}{}{}{}'.format(self.status, NEWLINE, self.header, NEWLINE, NEWLINE)
+        response = response.encode("utf-8")
+        response += self.content
         """
         Returns the utf-8 bytes of the response.
 
@@ -305,7 +310,6 @@ class ResponseBuilder:
 
         Where CRLF is our `NEWLINE` constant.
         """
-        pass
 
 
 if __name__ == "__main__":
