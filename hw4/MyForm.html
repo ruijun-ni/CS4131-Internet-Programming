@@ -1,0 +1,426 @@
+<!-- This page consists of an eventinput form that will be used to add events. -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>MyForm</title>
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            h1 {
+                color:black;
+            }
+
+            h2 {
+                color:#7a0019;
+            }
+
+
+            iframe {
+                border: 0px;
+            }
+
+
+            /* Navigation bar styling */
+            nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0; 
+            overflow: hidden;
+            background-color:#7a0019;
+            }
+
+            nav li {
+                float: left;
+            }
+
+            nav a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 10px 12px;
+                text-decoration: none;
+            }
+
+            nav li a:hover {
+                background-color: #ffcc33;
+                color: black;
+            }
+            /* end of nav bar styling */
+
+
+
+            /* Schedule table styling */
+            table, th, td {
+                border: 1px solid rgba(255,183,30,0.8);
+                border-collapse: collapse;
+            }
+
+            #schedule th {
+                background-color:rgba(255,183,30,0.8);
+            }
+
+            #schedule tr:nth-child(even) {
+                background-color:rgba(255,222,122,0.5);
+            }
+
+            #schedule tr:nth-child(odd) {
+                background-color: rgba(255,183,30,0.5);
+            }
+
+            .weekdays {
+                display: none;
+            }
+
+
+            /* end of schedule table styling */
+
+
+            #container {
+                display: flex;
+                padding: 1%;
+                justify-content: space-around;
+            }
+
+            main { 
+                flex: 0 1 70%;
+            }
+
+            aside {
+                flex: 0 1 30%;
+            }
+
+            aside img {
+                width: 500px;
+                height: 350px;
+                border: 2px solid #7a0019;
+                margin-top: 80px;
+                margin-left: 15px;
+            }
+
+            #schedule tr:hover {
+                background-color: #ffcc33;
+            }
+
+            /* diplay the image when not hovering*/
+            .thumbnail {
+                height: 0;
+                width: 0;
+            }
+
+            #schedule tr:hover img{
+                position: relative;
+                height: 50px;
+                width:auto;
+            }
+
+            /* map and input area */
+            #map {
+                height: 50%;
+                margin-left: 0px;
+                width:auto;
+                height: 400px;
+                
+            }
+
+            #map2 {
+                height:100%;
+                width: 500px;
+                height: 400px;
+            }
+
+            #floating-panel {
+                position: relative;
+                margin-left: 10%;
+                margin-right: 10%;
+                background-color: #fff;
+                padding: 5px;
+                text-align: center;
+                font-family: 'Roboto','sans-serif';
+                line-height: 30px;
+                padding-left: 10px;
+            }	
+
+            #inputArea1 {
+                border: 1px solid gray;
+                width: 250px;
+                height: 200px;
+                background-color:rgb(201, 201, 201);
+            }
+
+
+            #inputArea2 {
+                border: 1px solid gray;
+                width: 250px;
+                height: 200px;
+                background-color:rgb(235, 235, 235);
+            }
+
+            #container_map {
+                display: grid;
+                grid-template-columns: 20% 60% 20% ;
+                margin: 2% 5%;
+            }
+
+
+            /* My form */
+            input[type=submit] {
+                background-color: #ffcc33;
+                border: none;
+                color: black;
+                padding: 10px 20px;
+                text-decoration: none;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 10px;
+            }
+
+            #eventForm {
+                background-color: #7a0019;
+                color: white;
+                border: 2px solid black;
+                border-radius: 10px;
+                margin-top:5%;
+                margin-left: 10%; 
+                text-align: left;
+                padding: 2px;
+                width: fit-content;
+            } 
+
+            #eventForm tr {
+                height: 40px;
+            }
+
+            /* add a map on the right of the form */
+            .container_form {
+                display: grid;
+                grid-template-columns: auto auto;
+                align-content: space-around;
+                margin: 10% 10%;
+            }
+
+            /* end of my form */
+
+
+            /* myWidgets */
+            .container {
+                display: grid;
+                grid-template-columns: auto auto;
+                grid-template-rows: auto auto;
+                align-content: space-around;
+                margin: 2% 7%;
+            }
+
+
+            /* Password Strength Validator */
+            #register .short{
+                color: red;
+                font-size: large;
+            } 
+            #register .weak{
+                color:orange;
+                font-size: large;
+            }
+            #register .good{
+                color:#2D98F3;
+                font-size: large;
+            }
+            #register .strong{
+                color: limegreen;
+                font-size: large;
+            } 
+
+            #register input {
+                padding: 4px 10px;
+                border: 1px solid #ffcc33;
+                width: 250px;
+                font-size: 1em;
+                height: 20px;
+            }
+
+            #passwordchecker #container {
+                width: 550px;
+                height: 300px;
+                background: white;
+                border-radius: 5px;
+                border: 2px solid #7a0019;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <nav>
+            <ul>
+                <li><a href="./MySchedule.html">My Schedule</a></li>
+                <li><a href="./MyForm.html">Form Input</a></li>
+                <li><a href="./MyWidgets.html">My Widget</a></li>
+                <li><a href="./MyServer.html">My Server</a></li>
+            </ul>
+        </nav>
+
+        <div class="container_form">
+            <div>
+                <form action="https://www-users.cselabs.umn.edu/~joh13266/echo.php" method="POST" id="eventForm">
+                    <table>
+                        <tr>
+                            <td><label for="event">Event</label></td>
+                            <td><input type="text" name="event" id="event" required pattern="[a-zA-Z0-9 ]+"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Day of Week</label></td>
+                            <td> 
+                                <input type="text" name="day" list="day">
+                                    <datalist id="day">
+                                        <option value="Sun">Sun</option>
+                                        <option value="Mon">Mon</option>
+                                        <option value="Tue">Tue</option>
+                                        <option value="Wed">Wed</option>
+                                        <option value="Thu">Thu</option>
+                                        <option value="Fri">Fri</option>
+                                        <option value="Sat">Sat</option>
+                                    </datalist>                    
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="start">Start</label></td>
+                            <td><input type="time" name="start" id="start" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="end">End</label></td>
+                            <td><input type="time" name="end" id="end" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="phone">Phone</label></td>
+                            <td><input type="number" name="phone" id="phone" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="location">Location</label></td>
+                            <!-- <td><input type="text" name="location" id="location" required></td> -->
+                            <td>
+                            <input id="location" name="location" type="text" placeholder="Enter your address" required>
+                            </td>
+                        </tr> 
+                        <tr>
+                            <td><label for="info">Extra Info</label></td>
+                            <td><input type="text" name="info" id="info" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="url">Enter URL for the Extra Info</label></td>
+                            <td><input type="url" name="url" id="url" required></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" value="Submit" id="submit"></td>
+                        </tr>
+                    </table>
+                
+                </form>
+            </div>
+
+            <div>
+                <div id="map2"></div>
+            </div>
+        </div>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfO15LgY_xnlSK0W39cdonVZx9gc4slg&libraries=places&callback=initMap" async defer></script>
+        <script>
+            var map;
+            var componentForm = {
+                street_number: 'short_name',
+                route: 'long_name',
+                locality: 'long_name',
+                administrative_area_level_1: 'short_name',
+                country: 'long_name',
+                postal_code: 'short_name'
+            };
+            function initMap() {
+                var myLatLng = {lat: 44.977276, lng: -93.232266};
+                map = new google.maps.Map(document.getElementById('map2'), {
+                    center: myLatLng,
+                    zoom: 14
+                });
+
+                var autocomplete = new google.maps.places.Autocomplete(
+                    (document.getElementById("location")), {
+                        types: ['geocode']
+                    });
+                    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                        fillInAddress();
+                });
+
+                new ClickEventHandler(map, origin);
+            }
+
+            function fillInAddress() {
+                // Get the place details from the autocomplete object.
+                var place = autocomplete.getPlace();
+
+                for (var component in componentForm) {
+                    document.getElementById(component).value = '';
+                    document.getElementById(component).disabled = false;
+                }
+
+                // Get each component of the address from the place details
+                // and fill the corresponding field on the form.
+                for (var i = 0; i < place.address_components.length; i++) {
+                    var addressType = place.address_components[i].types[0];
+                    if (componentForm[addressType]) {
+                    var val = place.address_components[i][componentForm[addressType]];
+                    document.getElementById(addressType).value = val;
+                    }
+                }
+            }
+
+
+            // get the location clicked in the map using POI 
+
+            function isIconMouseEvent(e) {
+                return "placeId" in e;
+            }
+            
+            class ClickEventHandler {
+                map;
+                placesService;
+                constructor(map) {
+                this.map = map;
+                this.placesService = new google.maps.places.PlacesService(map);
+                this.map.addListener("click", this.handleClick.bind(this));
+                }
+                handleClick(event) {
+                console.log("You clicked on: " + event.latLng);
+                if (isIconMouseEvent(event)) {
+                    console.log("You clicked on place:" + event.placeId);
+
+                    event.stop();
+                    if (event.placeId) {
+                    this.getPlaceInformation(event.placeId);
+                    }
+                }
+                }
+            
+                getPlaceInformation(placeId) {
+                const me = this;
+            
+                this.placesService.getDetails({ placeId: placeId }, (place, status) => {
+                    if (
+                    status === "OK" &&
+                    place &&
+                    place.geometry &&
+                    place.geometry.location
+                    ) {
+                        console.log(place.formatted_address);
+                        document.getElementById("location").value = place.formatted_address;
+                    }
+                });
+                }
+            }
+        </script>
+    </body>
+
+</html>

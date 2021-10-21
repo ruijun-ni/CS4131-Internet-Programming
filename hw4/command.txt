@@ -1,0 +1,28 @@
+cd '/home/nee00011/Documents/csci4131/hw4/nee00011'
+chmod 640 private.html
+chmod 644 403.html
+chmod 644 404.html
+chmod 644 MySchedule.html
+chmod 644 MyWidgets.html
+chmod 644 MyForm.html
+chmod 644 MyServer.html
+chmod 644 Coffman.html
+chmod 644 OuttaSpace.html
+chmod 644 Coffman_N_OuttaSpace.html
+chmod 644 coffman.png
+chmod 644 coffman.jpg
+chmod 644 OuttaSpace.mp3
+chmod 644 img/blegen.jpg
+chmod 644 img/breakfast.jpg
+chmod 644 img/coffman.jpg
+chmod 644 img/gophers-mascot.png
+chmod 644 img/keller.jpg
+chmod 644 img/rec.jpg
+chmod 644 img/svf.jpg
+chmod 644 img/tate.jpg
+chmod 644 img/teahouse.jpg
+chmod 644 img/walter.jpg
+chmod 644 img/willey.jpg
+chmod 644 img/zoom.jpg
+python3 myServerStudent.py
+

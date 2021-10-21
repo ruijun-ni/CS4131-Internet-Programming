@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>MySchedule</title>
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            h1 {
+                color:black;
+            }
+
+            h2 {
+                color:#7a0019;
+            }
+
+
+            iframe {
+                border: 0px;
+            }
+
+
+            /* Navigation bar styling */
+            nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0; 
+            overflow: hidden;
+            background-color:#7a0019;
+            }
+
+            nav li {
+                float: left;
+            }
+
+            nav a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 10px 12px;
+                text-decoration: none;
+            }
+
+            nav li a:hover {
+                background-color: #ffcc33;
+                color: black;
+            }
+            /* end of nav bar styling */
+
+
+
+            /* Schedule table styling */
+            table, th, td {
+                border: 1px solid rgba(255,183,30,0.8);
+                border-collapse: collapse;
+            }
+
+            #schedule th {
+                background-color:rgba(255,183,30,0.8);
+            }
+
+            #schedule tr:nth-child(even) {
+                background-color:rgba(255,222,122,0.5);
+            }
+
+            #schedule tr:nth-child(odd) {
+                background-color: rgba(255,183,30,0.5);
+            }
+
+            .weekdays {
+                display: none;
+            }
+
+
+            /* end of schedule table styling */
+
+
+            #container {
+                display: flex;
+                padding: 1%;
+                justify-content: space-around;
+            }
+
+            main { 
+                flex: 0 1 70%;
+            }
+
+            aside {
+                flex: 0 1 30%;
+            }
+
+            aside img {
+                width: 500px;
+                height: 350px;
+                border: 2px solid #7a0019;
+                margin-top: 80px;
+                margin-left: 15px;
+            }
+
+            #schedule tr:hover {
+                background-color: #ffcc33;
+            }
+
+            /* diplay the image when not hovering*/
+            .thumbnail {
+                height: 0;
+                width: 0;
+            }
+
+            #schedule tr:hover img{
+                position: relative;
+                height: 50px;
+                width:auto;
+            }
+
+            /* map and input area */
+            #map {
+                height: 50%;
+                margin-left: 0px;
+                width:auto;
+                height: 400px;
+                
+            }
+
+            #map2 {
+                height:100%;
+                width: 500px;
+                height: 400px;
+            }
+
+            #floating-panel {
+                position: relative;
+                margin-left: 10%;
+                margin-right: 10%;
+                background-color: #fff;
+                padding: 5px;
+                text-align: center;
+                font-family: 'Roboto','sans-serif';
+                line-height: 30px;
+                padding-left: 10px;
+            }	
+
+            #inputArea1 {
+                border: 1px solid gray;
+                width: 250px;
+                height: 200px;
+                background-color:rgb(201, 201, 201);
+            }
+
+
+            #inputArea2 {
+                border: 1px solid gray;
+                width: 250px;
+                height: 200px;
+                background-color:rgb(235, 235, 235);
+            }
+
+            #container_map {
+                display: grid;
+                grid-template-columns: 20% 60% 20% ;
+                margin: 2% 5%;
+            }
+
+
+            /* My form */
+            input[type=submit] {
+                background-color: #ffcc33;
+                border: none;
+                color: black;
+                padding: 10px 20px;
+                text-decoration: none;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 10px;
+            }
+
+            #eventForm {
+                background-color: #7a0019;
+                color: white;
+                border: 2px solid black;
+                border-radius: 10px;
+                margin-top:5%;
+                margin-left: 10%; 
+                text-align: left;
+                padding: 2px;
+                width: fit-content;
+            } 
+
+            #eventForm tr {
+                height: 40px;
+            }
+
+            /* add a map on the right of the form */
+            .container_form {
+                display: grid;
+                grid-template-columns: auto auto;
+                align-content: space-around;
+                margin: 10% 10%;
+            }
+
+            /* end of my form */
+
+
+            /* myWidgets */
+            .container {
+                display: grid;
+                grid-template-columns: auto auto;
+                grid-template-rows: auto auto;
+                align-content: space-around;
+                margin: 2% 7%;
+            }
+
+
+            /* Password Strength Validator */
+            #register .short{
+                color: red;
+                font-size: large;
+            } 
+            #register .weak{
+                color:orange;
+                font-size: large;
+            }
+            #register .good{
+                color:#2D98F3;
+                font-size: large;
+            }
+            #register .strong{
+                color: limegreen;
+                font-size: large;
+            } 
+
+            #register input {
+                padding: 4px 10px;
+                border: 1px solid #ffcc33;
+                width: 250px;
+                font-size: 1em;
+                height: 20px;
+            }
+
+            #passwordchecker #container {
+                width: 550px;
+                height: 300px;
+                background: white;
+                border-radius: 5px;
+                border: 2px solid #7a0019;
+            }
+        </style>
+    </head>
+
+    <body>
+        <nav>
+            <ul>
+                <li><a href="./MySchedule.html">My Schedule</a></li>
+                <li><a href="./MyForm.html">Form Input</a></li>
+                <li><a href="./MyWidgets.html">My Widget</a></li>
+                <li><a href="./MyServer.html">My Server</a></li>
+            </ul>
+        </nav>
+
+        <p><span id="clock"></span></p>
+
+        <h1>My Schedule</h1>
+        <div id="container">
+            <main>
+                <table id="schedule">
+    
+                    <tr>
+                        <th>Day</th>
+                        <th>Event</th>
+                        <th>Time</th>
+                        <th>Event Location (Virtual or Physical)</th>
+                        <th>Phone Number</th>
+                        <th>URL</th>
+                    </tr>
+        
+                    <tr id="blegen">
+                        <td class="Monday">Monday</td>
+                        <td class="eventName">Csci 4131 Lecture</td>
+                        <td class="eventTime"><span class="weekdays">Monday, </span>9:45am - 11:00am</td>
+                        <td class="eventLocation">
+                            Blegen Hall - 269 19th Ave S, Minneapolis, MN 55455
+                            <img class="thumbnail" src="img/blegen.jpg" alt="Blegen Hall">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268388">Csci 4131 Info</a></td>
+                    </tr>
+        
+                    <tr id="willey">
+                        <td class="Monday">Monday</td>
+                        <td class="eventName">Csci 2011 Lecture</td>
+                        <td class="eventTime"><span class="weekdays">Monday, </span>12:20pm - 13:10pm</td>
+                        <td class="eventLocation">
+                            Willey Hall, 225 S 19th Ave, Minneapolis, MN 55455
+                            <img class="thumbnail" src="img/willey.jpg" alt="Willey Hall">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268008">Csci 2011 Info</a></td>
+                    </tr>
+        
+                    <tr id="walter">
+                        <td class="Monday">Monday</td>
+                        <td class="eventName">Csci 2021 Lecture</td>
+                        <td class="eventTime"><span class="weekdays">Monday, </span>13:25pm - 14:15pm</td>
+                        <td class="eventLocation">
+                            Walter Library, 117 Pleasant St SE, Minneapolis, MN 55455
+                            <img class="thumbnail" src="img/walter.jpg" alt="Walter Library">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268388">Csci 2021 Info</a></td>
+                    </tr>
+        
+                    <tr id="keller1">
+                        <td class="Tuesday">Tuesday</td>
+                        <td class="eventName">Csci 2021 Laboratory</td>
+                        <td class="eventTime"><span class="weekdays">Tuesday, </span>08:00am - 08:50am</td>
+                        <td class="eventLocation">
+                            Kenneth H. Keller Hall, 200 Union St SE, Minneapolis, MN 55455
+                            <img class="thumbnail" src="img/keller.jpg" alt="Keller Hall">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268388">Csci 2021 Info</a></td>
+                    </tr>
+        
+                    <tr id="coffman">
+                        <td class="Tuesday">Tuesday</td>
+                        <td class="eventName">Part-time Job</td>
+                        <td class="eventTime"><span class="weekdays">Tuesday, </span>14:15pm - 17:45pm</td>
+                        <td class="eventLocation">
+                            Coffman Memorial Union, 300 Washington Ave SE, Minneapolis, MN 55455
+                            <img class="thumbnail" src="img/coffman.jpg" alt="Coffman Memorial Union">
+                        </td>
+                        <td>(612) 625-7543</td>
+                        <td><a href="https://dining.umn.edu/job-office">M Dining Student Job Office</a></td>
+                    </tr>
+        
+                    <tr id="keller2">
+                        <td class="Wednesday">Wednesday</td>
+                        <td class="eventName">Csci 2021 Lab</td>
+                        <td class="eventTime"><span class="weekdays">Wednesday, </span>08:00am - 08:50am</td>
+                        <td class="eventLocation">
+                            Kenneth H. Keller Hall, 200 Union St SE, Minneapolis, MN 55455
+                            <img class="thumbnail" src="img/keller.jpg" alt="Keller Hall">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268508">Csci 2021 Info</a></td>
+                    </tr>
+        
+                    <tr id="svf">
+                        <td class="Thursday">Thursday</td>
+                        <td class="eventName">Walk Dog</td>
+                        <td class="eventTime"><span class="weekdays">Thursday, </span>7:30am - 9:00am</td>
+                        <td class="eventLocation">
+                            850 Washington Ave SE
+                            <img class="thumbnail" src="img/svf.jpg" alt="Stadium Village Flat">
+                        </td>
+                        <td>(612) 248-1000</td>
+                        <td><a href="https://stadiumvillageflats.com/">Stadium Village Flats</a></td>
+                    </tr>
+        
+        
+                    <tr id="tate">
+                        <td class="Friday">Friday</td>
+                        <td class="eventName">Csci 2041 Lecture</td>
+                        <td class="eventTime"><span class="weekdays">Friday, </span>11:15am - 12:05am</td>
+                        <td class="eventLocation">
+                            John T. Tate Hall, 116 Church St SE, Minneapolis, MN 55455
+                            <img class="thumbnail" src="img/tate.jpg" alt="Tate Hall">
+                        </td>
+                        <td>No Phone Number</td>
+                        <td><a href="https://canvas.umn.edu/courses/268617">Csci 2041 Info</a></td>
+                    </tr>
+        
+                    <tr id="teahouse">
+                        <td class="Saturday">Saturday</td>
+                        <td class="eventName">Brunch</td>
+                        <td class="eventTime"><span class="weekdays">Saturday, </span>10:00am - 11:30am</td>
+                        <td class="eventLocation">
+                            2425 University Avenue SE, Minneapolis, MN 55414
+                            <img class="thumbnail" src="img/teahouse.jpg" alt="Tea House">
+                        </td>
+                        <td>(612) 331-8866</td>
+                        <td><a href="https://www.teahouseumn.com/">Tea House</a></td>
+                    </tr>
+        
+                    <tr id="rec">
+                        <td class="Sunday">Sunday</td>
+                        <td class="eventName">Work out</td>
+                        <td class="eventTime"><span class="weekdays">Sunday, </span>10:00am - 11:00am</td>
+                        <td class="eventLocation">
+                            123 Harvard Street SE, Minneapolis, MN 55455
+                            <img class="thumbnail" src="img/rec.jpg" alt="Rec Center">
+                        </td>
+                        <td>(612) 626-9222</td>
+                        <td><a href="https://recwell.umn.edu/">Info on where I work out</a></td>
+                    </tr>
+        
+                </table>
+            </main>
+            
+            <aside>
+                <button id="show_or_goaway" type="button">Go away!</button>
+                <img id="gopher" src="img/gophers-mascot.png" alt="Gophers Mascot">
+            </aside>
+        </div>
+
+        <div id="container_map">
+
+            <!-- the map -->
+            <div id="sidebar"></div>
+            <div id="map"></div>
+
+            <div id="inputArea">
+                <!-- the input area 1 -->
+                <div id="inputArea1">
+                    <p>
+                        Find 
+                        <select name="places" id="places">
+                            <option value="Restaurant">Restaurant</option>
+                            <option value="Hospital">Hospital</option>
+                            <option value="Parking">Parking</option>
+                            <option value="Supermarket">Supermarket</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </p>
+                    <p>
+                        <input type="text" id="textbox" placeholder="Enter Other Places" disabled>
+                    </p>
+                    <p>
+                        in <input type="text" id="numberOfMeters"> meters
+                    </p>
+                    <p>
+                        <input id="firstBtn" type="submit" value="Search" onclick="getLocation()">
+                    </p>
+                </div>
+
+                <!-- the input area 2 -->
+                <div id="inputArea2">
+                    <p>
+                        Direction to <input type="text" id="end"> by
+                    </p>
+                    <div>
+                            <input type="radio" name="travel" value="WALKING" id="walk">
+                            <label for="walk">WALK</label>
+                        
+                            <input type="radio" name="travel" value="DRIVING" id="drive">
+                            <label for="drive">DRIVE</label>
+                       
+                            <input type="radio" name="travel" value="TRANSIT" id="trans">
+                            <label for="trans">TRANSIT</label>
+                    </div>
+                    <p>
+                        <input id="secondBtn" type="submit" value="Go">
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYfO15LgY_xnlSK0W39cdonVZx9gc4slg&libraries=places&callback=initMap" async defer></script>
+        <script>
+            // timer - update time and day
+            let timer = setInterval(clock, 1000);
+            function clock() {
+            var datetoday = new Date();
+            var timenow = datetoday.toLocaleTimeString();
+            document.getElementById("clock").innerHTML = timenow;
+            }
+            var datetoday = new Date();
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var getDay = days[datetoday.getDay()];
+            var theDay = document.getElementsByClassName(getDay.toString());
+            for (var i=0; i<theDay.length; i++) {
+            theDay[i].style.color = "red";
+            }
+
+
+            // showing and fading picture
+            document.getElementById("show_or_goaway").addEventListener("click", display);
+
+            function display() {
+            var target = document.getElementById("gopher");
+            
+            if (document.getElementById("show_or_goaway").innerHTML == "Go away!"){
+                var fadeEffect = setInterval(function() {
+                if (!target.style.opacity) {
+                    target.style.opacity = 1;
+                }
+                if (target.style.opacity > 0) {
+                    target.style.opacity -= 0.1;
+                } else {
+                    clearInterval(fadeEffect);
+                }
+                }, 200);
+                document.getElementById("show_or_goaway").innerHTML = "Come back!";
+            } else {
+                var g_opacity = 0;
+                var showEffect = setInterval(function() {
+                console.log("show");
+                if (target.style.opacity < 1) {
+                    console.log("increase", g_opacity);
+                    target.style.opacity = g_opacity + 0.1;
+                    g_opacity += 0.1;
+                } else {
+                    console.log("clear increase");
+                    clearInterval(showEffect);
+                }
+                }, 200);
+                document.getElementById("show_or_goaway").innerHTML = "Go away!";
+            }
+            };
+
+
+            // pictures on the right
+            document.getElementById("blegen").addEventListener("mouseover",function(){
+            document.getElementById("gopher").src="img/blegen.jpg";
+            });
+            document.getElementById("willey").addEventListener("mouseover",function(){
+            document.getElementById("gopher").src="img/willey.jpg";
+            });
+            document.getElementById("walter").addEventListener("mouseover",function(){
+            document.getElementById("gopher").src="img/walter.jpg";
+            });
+            document.getElementById("keller1").addEventListener("mouseover",function(){
+            document.getElementById("gopher").src="img/keller.jpg";
+            });
+            document.getElementById("coffman").addEventListener("mouseover",function(){
+            document.getElementById("gopher").src="img/coffman.jpg";
+            });
+            document.getElementById("keller2").addEventListener("mouseover",function(){
+            document.getElementById("gopher").src="img/keller.jpg";
+            });
+            document.getElementById("svf").addEventListener("mouseover",function(){
+            document.getElementById("gopher").src="img/svf.jpg";
+            });
+            document.getElementById("tate").addEventListener("mouseover",function(){
+            document.getElementById("gopher").src="img/tate.jpg";
+            });
+            document.getElementById("teahouse").addEventListener("mouseover",function(){
+            document.getElementById("gopher").src="img/teahouse.jpg";
+            });
+            document.getElementById("rec").addEventListener("mouseover",function(){
+            document.getElementById("gopher").src="img/rec.jpg";
+            });
+
+
+            // input area
+            // when "other" is selected, enable the textbox
+            var places = document.getElementById("places")
+            places.addEventListener('change', (e) => {  
+            if (places.value == "Other") {
+                console.log("'Other' is selected, enable the textbox");
+                document.getElementById("textbox").disabled = false;
+            } else {
+                document.getElementById("textbox").disabled = true;
+            }
+            });
+
+
+            // map: geocoder
+            var marker, marker2;
+            var infowindow, infowindow2;
+            var service;
+
+            function geocodeAddress(geocoder, resultsMap, name, address, time, day) {
+            geocoder.geocode({'address': address}, function(results, status) {
+                const icon_img = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+                if (status === google.maps.GeocoderStatus.OK) {
+                    resultsMap.setCenter(results[0].geometry.location);
+                    marker2 = new google.maps.Marker({
+                        map: resultsMap,
+                        position: results[0].geometry.location,
+                        title:address,
+                        icon: icon_img
+                        });
+                    infowindow2 = new google.maps.InfoWindow({
+                        content: "<p>" + name + "</p><p>" + day + time + "</p><p>" + address + "</p>"
+                        });
+            
+                    google.maps.event.addListener(marker2, 'click', createWindow(resultsMap, infowindow2, marker2));
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                } 
+            }); 
+            } 
+
+
+            function createWindow(rmap, rinfowindow, rmarker){
+            return function(){
+                rinfowindow.open(rmap, rmarker);
+            }
+            }
+
+            // init map
+
+            function initMap() {
+            var myLatLng = {lat: 44.977276, lng: -93.232266};
+            /* Create a map and place it on the div */
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14,
+                center: myLatLng
+                });
+
+            // dynamically extract the name, time and location of the physical events from the DOM objects
+            var locations = document.getElementsByClassName("eventLocation"); // This is the locations we will search for using the geocoder
+            var names = document.getElementsByClassName("eventName");
+            var times = document.getElementsByClassName("eventTime");
+            var days = document.getElementsByClassName("weekdays");
+            
+            for (var i = 0; i < locations.length; i++) {
+                var geocoder = new google.maps.Geocoder(); // Create a geocoder object
+                geocodeAddress(geocoder, map, names[i].innerText,locations[i].innerText, times[i].innerText, days[i].innerText);
+            }
+
+
+            // the second search component
+            var currentPos = {
+                lat: 44.977276, lng: -93.232266
+            };
+            navigator.geolocation.getCurrentPosition((position) => {
+                console.log(position);
+                currentPos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+                };
+                console.log(currentPos);
+                
+            });
+
+            const directionsRenderer = new google.maps.DirectionsRenderer();
+            const directionsService = new google.maps.DirectionsService();
+
+            directionsRenderer.setMap(map);
+            directionsRenderer.setPanel(document.getElementById("sidebar"));
+
+            const control = document.getElementById("floating-panel");
+
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
+            const onChangeHandler = function () {
+                calculateAndDisplayRoute(directionsService, directionsRenderer, currentPos);
+            };
+
+            document.getElementById("secondBtn").addEventListener("click", onChangeHandler);
+
+
+            var autocomplete = new google.maps.places.Autocomplete(
+                (document.getElementById("end")), {
+                    types: ['geocode']
+                });
+                google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                    fillInAddress();
+            });
+
+
+            } 
+
+            // for the second input box
+            function calculateAndDisplayRoute(directionsService, directionsRenderer, currentPos) {
+
+            const selectedMode = document.querySelector('input[name="travel"]:checked').value;
+
+            console.log(selectedMode);
+            const end = document.getElementById("end").value;
+
+            directionsService
+                .route({
+                origin: currentPos,
+                destination: end,
+                travelMode: google.maps.TravelMode[selectedMode],
+                })
+                .then((response) => {
+                directionsRenderer.setDirections(response);
+                })
+                .catch((e) => window.alert("Directions request failed due to " + status));
+            }
+
+            // for autocomplete
+            let autocomplete;
+            var componentForm = {
+            street_number: 'short_name',
+            route: 'long_name',
+            locality: 'long_name',
+            administrative_area_level_1: 'short_name',
+            country: 'long_name',
+            postal_code: 'short_name'
+            };
+            function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            var place = autocomplete.getPlace();
+
+            for (var component in componentForm) {
+                document.getElementById(component).value = '';
+                document.getElementById(component).disabled = false;
+            }
+
+            // Get each component of the address from the place details
+            // and fill the corresponding field on the form.
+            for (var i = 0; i < place.address_components.length; i++) {
+                var addressType = place.address_components[i].types[0];
+                if (componentForm[addressType]) {
+                var val = place.address_components[i][componentForm[addressType]];
+                document.getElementById(addressType).value = val;
+                }
+            }
+            }
+
+            // for the first input box
+            function getLocation() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 44.977276, lng: -93.232266},
+                zoom: 14
+            });
+            const theRadius =  document.getElementById("numberOfMeters").value;
+            var placeType = document.getElementById("places").value;
+            console.log(placeType);
+            if (placeType == "Other") {
+                console.log("other is selected");
+                placeType = document.getElementById("textbox").value;
+            }
+            
+            var request = {
+                location: {lat: 44.977276, lng: -93.232266},
+                radius: theRadius,
+                type: placeType
+            };
+            console.log(request);
+            service = new google.maps.places.PlacesService(map);
+            service.nearbySearch(request, callback);
+            }
+
+            // //////// TODO: InfoWindow
+            // TODO: content
+
+            function callback(results, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; i++) {
+                var position = results[i].geometry.location;
+
+                marker = new google.maps.Marker({ position: position, map: map});
+            
+                infowindow = new google.maps.InfoWindow({
+                    content: position.toString()
+                });
+                
+
+                google.maps.event.addListener(marker, "click",createWindow(map,infowindow,marker));
+                }
+            }
+            }
+
+        </script>
+    </body>
+
+</html>
