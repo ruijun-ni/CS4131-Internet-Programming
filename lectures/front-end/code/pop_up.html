@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset = "utf-8">
+	<title>A Simple Example </title>
+	<!-- The css styling below is used to display the thumbnail image under the text "A paragraph with a picture"-->
+	<!-- default is do not display img elements in the paragraph-->
+	<!-- but when the hover event occurs over an element 
+	     with a non-empty image, display a 30px x 30px thumbnail of the picture -->	
+	<style> 
+		p img {
+			display: none; 
+			
+		}
+
+		p:hover img {  
+			display: block;
+			height :30px;
+			width : 30px;
+		}
+	</style>
+	<script>
+	  // displays the big picture on mouseover of the 1st 
+	  // paragraph element "A paragraph with a picture" in the body below
+		function showBigPic(num) {
+			//window.alert("got to showBigPic number is " + num);
+			bigpic = document.getElementById("big");
+			if (parseInt(num) == 1) {
+				bigpic.src = "gophers-mascot.png";
+				bigpic.alt = "Here's Goldy"
+			}
+		}
+		
+	</script>
+</head>
+<body>
+	<p onmouseover="showBigPic(1)"> A paragraph with a picture
+		<img src="gophers-mascot.png" alt="Picture of Goldy"/>
+	</p>
+	
+	<div>
+		<h2>The big picture </h2>
+		<img id="big" src="" alt=""/>
+	</div>
+</body>
+</html>

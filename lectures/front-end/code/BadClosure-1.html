@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+   <head> 
+      <meta charset = "utf-8">
+      <title>Example of incorrect function closure</title>
+		<script>
+		
+			function addLinks () {
+				for (var i=1, link; i<6; i++) {		
+					link = document.createElement("a");
+					link.innerHTML = "      Link" + i + "<br><br>";
+					link.onclick = function () {
+								alert("This is link: " + i);
+					};	
+					document.body.appendChild(link);
+				}
+			}
+
+			window.onload = addLinks;		
+
+		</script>
+   </head>
+   <body>
+   </body>
+</html>
+

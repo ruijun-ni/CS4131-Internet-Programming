@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+   <head> 
+      <meta charset = "utf-8">
+      <title>Examples of function Declarations and Use</title>
+		<script>
+		
+			// Declare Function with no args, no return value
+			function showYear() {
+				var today = new Date();
+				alert (today.getFullYear());
+			}
+			
+			// Declare Function with two args, no return value
+			var displayEmail = function( username, domain ) {
+				document.writeln ("<h3>" + username + "@" + domain + "</h3>");
+			}
+		
+			// Declare function with two args, and a return value
+			var calculateTax = function (itemcost, taxRate) {
+				var tax = itemcost * taxRate;
+				tax = parseFloat (tax.toFixed(2));
+				return tax;
+			}
+			
+			//Function Calls
+			showYear();  //Function with no args and no return value
+			
+			
+			var sitemcost = window.prompt("Enter Cost of Item: ");
+			var itemcost = parseFloat(sitemcost);
+			var staxRate = window.prompt("Enter Tax Rate: ");
+			var taxRate = parseFloat(staxRate) /100.00;
+			var SalesTax = calculateTax (itemcost, taxRate); // Function with two args and a return value
+			document.writeln("<h1> The sales tax is " + "$" + SalesTax + "</h1>");
+			
+			displayEmail( "challou" , "cs.umn.edu"); //Function with two args, no return value
+
+		</script>
+   </head>
+   <body>
+   </body>
+</html>
+
