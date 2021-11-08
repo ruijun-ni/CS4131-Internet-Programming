@@ -1,0 +1,11 @@
+{
+  "name": "nee00011_hw05",
+  "version": "1.0.0",
+  "description": "Assignment 5",
+  "main": "createServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nee00011",
+  "license": "ISC"
+}
