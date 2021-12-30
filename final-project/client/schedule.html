@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+            crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+        <title>My Schedule</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expanded navbar-light bg-light mb-5">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link active" href="schedule.html">Schedule</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="addEvent.html">Add Event</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="container mb-5">
+            <div class="alert alert-secondary" role="alert">
+                Click on a day to see its events
+            </div>
+        </div>
+        <div class="container mb-3">
+            <ul id="days" class="nav nav-tabs nav-fill">
+                <li class="nav-item">
+                    <a class="nav-link" onclick="formTable(this)">Sunday</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="formTable(this)">Monday</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="formTable(this)">Tuesday</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="formTable(this)">Wednesday</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="formTable(this)">Thursday</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="formTable(this)">Friday</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="formTable(this)">Saturday</a>
+                </li>
+            </ul><br>
+            <br>
+            <div class="container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Extra Information</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleTable"></tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+            function formTable(element) {
+                $('#days li a').removeClass("active");
+                $(element).addClass("active");
+                clearTable();
+                let day = $(element)
+                    .text()
+                    .toLowerCase();
+
+                // TODO: Make request and fill table with events for the day // UPDATE: change
+                // it to express version
+                $.post('/getSchedule', {
+                    'day': day
+                }, (events) => {
+                    console.log(events);
+                    tablestr = "";
+                    var i;
+                    for (i = 0; i < events.length; i++) {
+                        tablestr += "<tr><td>" + events[i].name + "</td><td>" + events[i].start + "-" + events[i].end +
+                                "</td><td>" + events[i].location + "</td><td>" + events[i].phone +
+                                "</td><td><a href =" + events[i].url + ">" + events[i].info + "</a></td></tr>";
+                    }
+                    document
+                        .getElementById("scheduleTable")
+                        .innerHTML = tablestr;
+                });
+
+            }
+
+            function clearTable() {
+                $('#scheduleTable tbody').empty();
+            }
+        </script>
+    </body>
+</html>
