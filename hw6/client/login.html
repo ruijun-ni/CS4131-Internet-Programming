@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="client/css/style.css"> -->
+    <title>Login Page</title>
+    <style type="text/css">
+        .jumbotron {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="jumbotron" style="background: darkseagreen !important;">
+        <h1>login Page</h1>
+        <p>Please enter your user name and password. Both are case senstive.</p>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <form name="myForm"  id = "myForm" >
+                <label for="username">User:</label><br>
+                <input type="text" id="username" name="username" placeholder="username" required style="width: 100%;"><br>
+                <br>
+                <label for="password">Password:</label><br>
+                <input type="text" id="password" name="password" placeholder="password" required style="width: 100%;"><br>
+                <br>
+                <input type="submit" value="submit!"  class="btn btn-primary btn-block">
+            </form><br>
+            <!-- <button id="myButton" type="submit" class="btn btn-primary btn-block" onclick="validpassword">
+                Log in
+              </button> -->
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <script> 
+        $(document).ready(function () { 
+          $('#myForm').submit(function (event) { 
+                       event.preventDefault(); 
+                 //collect the form data using Id Selector for whatever data you need to send to server 
+                       let login= $('#username').val(); 
+                       let password= $('#password').val(); 
+                    //    console.log(login,password);
+                       $.post('/loginvalidation', 
+                           {"login": login, "password": password}, 
+                            (data) => { 
+                                    // console.log(data); 
+                             if (data.status === 'success') { 
+                                //pseudo code 
+                                //Make sure error message is not displayed 
+                                //Re-direct to display all events page, 
+                                // console.log("success");
+                                window.location.href = 'allEvents'; 
+                             } 
+                             else { 
+                                //   Display error message 
+                                window.alert("wrong password and/or usename, try again")
+                                window.location.href = 'login'; 
+                                // console.log("error connect")
+                             } 
+                           }); 
+                   }); 
+               }); 
+   </script> 
+</body>
+
+</html>
