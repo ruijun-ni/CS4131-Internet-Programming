@@ -1,6 +1,6 @@
-User name: nee00011
-Password: X57sjut6BfQWW2K
+User name: *****
+Password: ********
 
 Connection string: 
-mongodb+srv://nee00011:X57sjut6BfQWW2K@cluster0.kfdxu.mongodb.net/schedule?retryWrites=true&w=majority
+mongodb+srv://*****:********@cluster0.kfdxu.mongodb.net/schedule?retryWrites=true&w=majority
 
